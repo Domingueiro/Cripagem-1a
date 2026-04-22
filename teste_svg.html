@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Teste SVG</title>
+</head>
+<body style="background:#eee; padding:2rem;">
+
+<p>Se o retangulo abaixo aparecer em laranja, o SVG inline funciona normalmente.</p>
+
+<svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="100" fill="#c9922a" rx="8"/>
+  <text x="200" y="55" text-anchor="middle" font-size="18" fill="white" font-family="Arial">SVG funcionando</text>
+</svg>
+
+<p style="margin-top:2rem;">Se o retangulo NAO aparecer, o problema esta no ambiente (browser ou servidor).</p>
+
+</body>
+</html>
