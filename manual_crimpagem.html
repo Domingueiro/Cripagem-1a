@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Testes de Crimpagem | UL-486 & MIL-T-7928D</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --rust: #b84c1e;
+    --steel: #3a4a5c;
+    --gold: #c9922a;
+    --cream: #f7f3ec;
+    --paper: #ede8df;
+    --mid: #8a8070;
+    --rule: #c8bfae;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--steel);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-stripe {
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--rust) 0, var(--rust) 24px, var(--gold) 24px, var(--gold) 48px);
+  }
+  .header-inner {
+    padding: 2.5rem 3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .header-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    color: white;
+  }
+  header h1 span { color: var(--gold); }
+  .header-norms {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .norm-badge {
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.8rem;
+    text-transform: uppercase;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+
+  /* INTRO BOX */
+  .intro-box {
+    background: var(--paper);
+    border-left: 5px solid var(--rust);
+    padding: 1.2rem 1.6rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+    color: var(--steel);
+    font-style: italic;
+  }
+  .intro-box strong { color: var(--rust); font-style: normal; }
+
+  /* SECTION */
+  section { margin-bottom: 2.8rem; }
+
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--steel);
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  h2 .sec-num {
+    background: var(--rust);
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.1rem 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--rust);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 1.4rem 0 0.5rem;
+  }
+
+  p { margin-bottom: 0.8rem; }
+
+  /* NORM SOURCE PILL */
+  .norm-src {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.5rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+    vertical-align: middle;
+  }
+  .ul { background: #1e3a5c; color: white; }
+  .mil { background: #4a5e3a; color: white; }
+  .both { background: var(--gold); color: white; }
+
+  /* STEPS */
+  ol.steps { list-style: none; counter-reset: step; padding: 0; }
+  ol.steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    background: var(--steel);
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  ul.checks { list-style: none; padding: 0; }
+  ul.checks li {
+    padding: 0.35rem 0 0.35rem 1.8rem;
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+  }
+  ul.checks li::before {
+    content: "✓";
+    position: absolute;
+    left: 0.3rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  ul.checks li:last-child { border-bottom: none; }
+
+  ul.rejects { list-style: none; padding: 0; }
+  ul.rejects li {
+    padding: 0.35rem 0 0.35rem 1.8rem;
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+  }
+  ul.rejects li::before {
+    content: "✗";
+    position: absolute;
+    left: 0.3rem;
+    color: var(--rust);
+    font-weight: 700;
+  }
+  ul.rejects li:last-child { border-bottom: none; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead tr { background: var(--steel); color: white; }
+  thead th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.8rem;
+    text-align: center;
+    border: 1px solid #2a3a4c;
+  }
+  tbody tr:nth-child(even) { background: var(--paper); }
+  tbody td {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--rule);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  tbody td:first-child { text-align: left; font-weight: 600; }
+  .table-caption {
+    font-size: 0.8rem;
+    color: var(--mid);
+    font-style: italic;
+    margin-top: 0.4rem;
+  }
+
+  /* ALERT BOXES */
+  .alert {
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    border-left: 4px solid;
+    font-size: 0.92rem;
+  }
+  .alert-warn { background: #fff8ee; border-color: var(--gold); }
+  .alert-danger { background: #fff3f0; border-color: var(--rust); }
+  .alert-info { background: #f0f4f8; border-color: var(--steel); }
+  .alert strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .alert-warn strong { color: var(--gold); }
+  .alert-danger strong { color: var(--rust); }
+  .alert-info strong { color: var(--steel); }
+
+  /* TWO COLUMNS */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin: 1rem 0;
+  }
+  .col-box {
+    background: var(--paper);
+    padding: 1rem 1.2rem;
+    border-top: 3px solid var(--rule);
+  }
+  .col-box.rust-top { border-top-color: var(--rust); }
+  .col-box.steel-top { border-top-color: var(--steel); }
+  .col-box h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.7rem;
+    color: var(--steel);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--steel);
+    color: #aab8c5;
+    text-align: center;
+    padding: 1.2rem 2rem;
+    font-size: 0.78rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  footer strong { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .header-inner { padding: 1.5rem 1.2rem 1.2rem; }
+    header h1 { font-size: 1.8rem; }
+    .container { padding: 1.5rem 1rem; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div>
+      <div class="header-label">Manual Técnico de Qualidade</div>
+      <h1>Testes de<br><span>Crimpagem</span></h1>
+    </div>
+    <div class="header-norms">
+      <div class="norm-badge">UL 486</div>
+      <div class="norm-badge">MIL-T-7928D</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="intro-box">
+    Este manual consolida os requisitos de teste e inspeção de conexões crimpadas conforme as normas <strong>UL 486 (A/B/C/F)</strong> — padrão de segurança para conectores elétricos — e <strong>MIL-T-7928D</strong> — especificação militar para terminais e emendas crimp em cobre. Aplica-se a condutores de cobre sólido e multifilamentado em cabos AWG 26 a 4/0 (e equivalentes métricos).
+  </div>
+
+  <!-- 1. ESCOPO -->
+  <section>
+    <h2><span class="sec-num">01</span> Escopo e Aplicação das Normas</h2>
+
+    <div class="two-col">
+      <div class="col-box rust-top">
+        <h4><span class="norm-src ul">UL 486</span> Underwriters Laboratories</h4>
+        <p>Cobre conectores de fio para uso geral elétrico. Subdivisões relevantes:</p>
+        <ul class="checks">
+          <li><strong>486-A/B</strong> — Conectores unipolares (cobre, alumínio, cobre-clad-Al)</li>
+          <li><strong>486-C</strong> — Conectores de emenda</li>
+          <li><strong>486-F</strong> — Terminais de ponteira de fio (ferrules)</li>
+        </ul>
+      </div>
+      <div class="col-box steel-top">
+        <h4><span class="norm-src mil">MIL-T-7928D</span> Especificação Militar</h4>
+        <p>Cobre terminais e emendas crimp em cobre, isolados e não isolados, para condutores multifilamentados. Base para aplicações aeronáuticas e de defesa. Sucedida pela <strong>SAE-AS7928</strong> em aplicações mais recentes.</p>
+        <ul class="checks">
+          <li>Condutores multifilamentados AWG 22 a 4/0</li>
+          <li>Requisitos de qualificação e aceitação de lote</li>
+          <li>Define processos e ferramentas aprovadas</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PREPARAÇÃO -->
+  <section>
+    <h2><span class="sec-num">02</span> Preparação Antes do Crimpagem</h2>
+
+    <h3>Seleção de Ferramentas</h3>
+    <p><span class="norm-src mil">MIL</span> A ferramenta crimp deve ser especificada e qualificada para o terminal em uso. Ferramentas não aprovadas invalidam o processo mesmo que o resultado visual seja aceitável. Verifique a folha de especificação da ferramenta (<em>Crimp Tool Specification Sheet</em>) antes de iniciar.</p>
+    <p><span class="norm-src ul">UL</span> No caso de ponteiras (ferrules), a aprovação UL 486-F é emitida para o sistema ferramenta + ferrule. Consulte o diretório online UL para confirmar a combinação aprovada.</p>
+
+    <h3>Preparo do Condutor</h3>
+    <ol class="steps">
+      <li>Remova o isolamento no comprimento especificado para o terminal — nem mais, nem menos.</li>
+      <li>Inspecione visualmente o condutor: ausência de cortes, entalhos ou fios cortados no decapamento.</li>
+      <li>Para fio multifilamentado, todos os filamentos devem estar intactos e contidos; não torca excessivamente antes da inserção.</li>
+      <li>Não use solda antes ou após o crimp — isso viola ambas as normas (altera as propriedades mecânicas e impede a inspeção adequada).</li>
+    </ol>
+
+    <div class="alert alert-warn">
+      <strong>⚠ Atenção</strong>
+      Condutores com encapamento de estanho (tin-plated) ou prata (silver-plated) têm tabelas de resistência mínimas próprias na MIL-T-7928D. Não use a tabela de cobre nu para esses materiais.
+    </div>
+  </section>
+
+  <!-- 3. INSPEÇÃO VISUAL -->
+  <section>
+    <h2><span class="sec-num">03</span> Inspeção Visual</h2>
+    <p>Ambas as normas exigem inspeção visual antes e/ou após o teste mecânico. É o primeiro filtro de qualidade.</p>
+
+    <h3>Critérios de Aceitação — Visual</h3>
+    <ul class="checks">
+      <li>Condutor visível pelo <em>inspection hole</em> do terminal (quando presente)</li>
+      <li>Todos os filamentos contidos no barril crimp, sem fios soltos ou protusos</li>
+      <li><em>Bellmouth</em> suave nas duas extremidades do barril (sem rebarbas ou arestas vivas)</li>
+      <li>Alinhamento reto: terminal não deve estar torcido em relação ao fio</li>
+      <li>Comprimento de decapagem correto — apenas uma pequena faixa de condutor exposto deve ser visível além do barril</li>
+      <li>Manga de isolamento posicionada corretamente (sem folga excessiva nem compressão do isolamento dentro do barril de condução)</li>
+      <li>Superfície do crimp contínua e uniforme — sem fissuras, deformações excessivas ou amassados irregulares</li>
+    </ul>
+
+    <h3>Critérios de Rejeição — Visual</h3>
+    <ul class="rejects">
+      <li>Isolamento penetrando na zona de condução do barril</li>
+      <li>Condutor não visível pelo inspection hole</li>
+      <li>Filamentos cortados, dobrados para fora ou ausentes</li>
+      <li>Crimp fora de posição (deslocado em relação ao centro do barril)</li>
+      <li>Duplo crimp ou crimp parcial sobre um terminal já crimpado</li>
+      <li>Fissuras ou trincas visíveis no barril</li>
+      <li>Sinal de oxidação severa no condutor exposto</li>
+    </ul>
+
+    <div class="alert alert-info">
+      <strong>ℹ Ampliação</strong>
+      A MIL-T-7928D e normas correlatas de aeronáutica (ex. IPC-A-620 Classe 3) recomendam inspeção com lupa ou microscópio para garantir que todas as condições acima sejam verificadas antes do teste destrutivo.
+    </div>
+  </section>
+
+  <!-- 4. TESTE DE TRAÇÃO -->
+  <section>
+    <h2><span class="sec-num">04</span> Teste de Tração (Pull Test)</h2>
+
+    <p>O ensaio de tração é o teste quantitativo primário exigido por ambas as normas. Avalia simultaneamente a integridade mecânica da conexão e a eficácia da ferramenta crimp.</p>
+
+    <div class="alert alert-info">
+      <strong>ℹ Por que o pull test valida também a ferramenta?</strong>
+      Força insuficiente no crimp deixa óxidos não condutivos entre condutor e terminal, aumentando resistência elétrica. Força excessiva (overcrimp) reduz a seção transversal do condutor, também elevando resistência. O pull test confirma que a janela de força correta foi aplicada.
+    </div>
+
+    <h3>Métodos de Ensaio</h3>
+    <div class="two-col">
+      <div class="col-box rust-top">
+        <h4>Pull and Break (Destrutivo)</h4>
+        <p>Método mais comum. Aplica-se força axial crescente até ruptura (separação terminal/fio ou quebra do fio). Registra-se o pico máximo de força.</p>
+        <p><strong>Taxa padrão:</strong> 25 mm/min (IPC-WHMA-A-620, ASTM B913). UL 486 aceita até 50 mm/min.</p>
+      </div>
+      <div class="col-box steel-top">
+        <h4>Pull and Return / Pull and Hold (Não Destrutivos)</h4>
+        <p><strong>Pull and Return:</strong> Força aplicada até valor especificado, depois removida. Verifica se o crimp suporta a carga sem separar.</p>
+        <p><strong>Pull and Hold:</strong> Força mantida por período determinado antes de remoção.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-warn">
+      <strong>⚠ Suporte de isolamento</strong>
+      <span class="norm-src ul">UL</span> <span class="norm-src mil">MIL</span> Ambas as normas requerem que o suporte de isolamento (manga/boot) seja mecanicamente neutralizado (aberto) antes do teste, para que a força medida reflita apenas a conexão metálica. Testar com o suporte intacto superestima o resultado.
+    </div>
+
+    <h3>Equipamento</h3>
+    <p>Use testador motorizado com taxa de avanço controlada. Garras adequadas ao diâmetro do fio e do terminal — garras do tipo <em>cable-cam</em> (auto-aperto sob carga) são recomendadas para evitar escorregamento. Certifique-se de calibração rastreável.</p>
+
+    <h3>Tabela de Força Mínima de Tração</h3>
+    <p>Valores mínimos de ruptura conforme <span class="norm-src mil">MIL-T-7928</span> e <span class="norm-src ul">UL 486</span> para condutores de cobre (AWG):</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Bitola (AWG)</th>
+            <th>MIL-T-7928 (lb)</th>
+            <th>MIL-T-7928 (N aprox.)</th>
+            <th>UL 486 (lb)</th>
+            <th>UL 486 (N aprox.)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>26</td><td>7</td><td>31</td><td>—</td><td>—</td></tr>
+          <tr><td>24</td><td>10</td><td>44</td><td>—</td><td>—</td></tr>
+          <tr><td>22</td><td>15</td><td>67</td><td>8</td><td>36</td></tr>
+          <tr><td>20</td><td>19</td><td>85</td><td>13</td><td>58</td></tr>
+          <tr><td>18</td><td>38</td><td>169</td><td>20</td><td>89</td></tr>
+          <tr><td>16</td><td>50</td><td>222</td><td>30</td><td>133</td></tr>
+          <tr><td>14</td><td>70</td><td>311</td><td>50</td><td>222</td></tr>
+          <tr><td>12</td><td>110</td><td>489</td><td>70</td><td>311</td></tr>
+          <tr><td>10</td><td>150</td><td>667</td><td>80</td><td>356</td></tr>
+          <tr><td>8</td><td>225</td><td>1001</td><td>90</td><td>400</td></tr>
+          <tr><td>6</td><td>300</td><td>1334</td><td>100</td><td>445</td></tr>
+          <tr><td>4</td><td>400</td><td>1779</td><td>140</td><td>623</td></tr>
+          <tr><td>2</td><td>550</td><td>2446</td><td>180</td><td>801</td></tr>
+          <tr><td>1</td><td>650</td><td>2891</td><td>200</td><td>890</td></tr>
+          <tr><td>1/0</td><td>700</td><td>3114</td><td>250</td><td>1112</td></tr>
+          <tr><td>2/0</td><td>750</td><td>3336</td><td>300</td><td>1334</td></tr>
+          <tr><td>3/0</td><td>825</td><td>3669</td><td>350</td><td>1557</td></tr>
+          <tr><td>4/0</td><td>875</td><td>3891</td><td>450</td><td>2001</td></tr>
+        </tbody>
+      </table>
+      <p class="table-caption">Fonte: MIL-T-7928 e UL 486 consolidados. Valores MIL são sistematicamente superiores por refletirem requisitos aeronáuticos/militares. Use sempre a norma aplicável ao seu projeto.</p>
+    </div>
+
+    <h3>Critério de Aceitação</h3>
+    <p>O resultado é <strong>aprovado</strong> quando a força de ruptura é igual ou superior ao valor mínimo tabelado para o AWG e material correspondente. Em caso de ruptura do fio (e não da interface crimp), considere o resultado válido desde que a força seja superior ao mínimo — indica que a conexão é mais resistente que o próprio condutor.</p>
+
+    <div class="alert alert-danger">
+      <strong>✗ Rejeição imediata</strong>
+      Resultado abaixo do mínimo tabelado. Separação da interface crimp/terminal a qualquer força abaixo do mínimo. Necessário revisar ferramenta, ajuste de crimpagem e/ou lote de terminais.
+    </div>
+  </section>
+
+  <!-- 5. TESTE ELÉTRICO -->
+  <section>
+    <h2><span class="sec-num">05</span> Testes Elétricos</h2>
+
+    <h3>Resistência de Contato</h3>
+    <p><span class="norm-src ul">UL</span> A UL 486 exige que conexões crimp atendam a limites de resistência elétrica de contato, complementando o teste mecânico. Conexões com crimp deficiente (óxidos não removidos) podem passar no pull test mas apresentar resistência elevada.</p>
+    <p>Critério geral para juntas hex em circuitos de potência: resistência inferior a <strong>5 mΩ</strong> durante ciclos de temperatura (ref. UL 486A-B / DIN 46235).</p>
+
+    <h3>Teste de Rigidez Dielétrica</h3>
+    <p><span class="norm-src ul">UL</span> Para terminais isolados e ferrules (UL 486-F), é exigido teste de rigidez dielétrica (dielectric withstand test) além da inspeção visual e teste de tração. Verifica a integridade do isolamento após o processo de crimp.</p>
+
+    <h3>Teste de Alívio de Tensão do Molde</h3>
+    <p><span class="norm-src ul">UL</span> UL 486-F exige também <em>mold stress relief test</em> para avaliar a resistência do corpo isolante à deformação sob temperatura. Requerimento não presente na DIN 46228 básica.</p>
+  </section>
+
+  <!-- 6. AMOSTRAGEM -->
+  <section>
+    <h2><span class="sec-num">06</span> Plano de Amostragem e Frequência</h2>
+
+    <h3>Qualificação de Processo (MIL)</h3>
+    <p><span class="norm-src mil">MIL</span> A MIL-T-7928D distingue entre testes de <strong>qualificação</strong> (validação inicial do produto/ferramenta) e testes de <strong>aceitação de lote</strong>. Para qualificação, é necessário testar amostras representativas de todo o range de bitolas declarado.</p>
+
+    <h3>Produção em Série</h3>
+    <p>Recomenda-se plano de amostragem estatística (SPC — Statistical Process Control) com pull tests periódicos. A frequência típica em ambientes industriais regulamentados é:</p>
+    <ul class="checks">
+      <li>1 amostra destrutiva a cada início de turno ou troca de ferramenta</li>
+      <li>1 amostra destrutiva a cada lote de 500 crimpagens (ou conforme histórico de processo)</li>
+      <li>Imediatamente após qualquer ajuste de ferramenta ou troca de lote de terminais</li>
+      <li>Após quedas, choques ou suspeita de dano à ferramenta</li>
+    </ul>
+
+    <div class="alert alert-warn">
+      <strong>⚠ Recalibração por SPC</strong>
+      Os resultados dos pull tests alimentam o controle estatístico. Quando a média de força cai abaixo de 1,5× o mínimo normativo, a ferramenta deve ser inspecionada e recalibrada antes de continuar a produção.
+    </div>
+  </section>
+
+  <!-- 7. REGISTRO -->
+  <section>
+    <h2><span class="sec-num">07</span> Rastreabilidade e Registro</h2>
+
+    <p>Ambas as normas — especialmente a MIL-T-7928D para aplicações críticas — pressupõem rastreabilidade completa do processo.</p>
+
+    <ul class="checks">
+      <li>Identificação do operador, data e turno</li>
+      <li>Número de lote / part number do terminal</li>
+      <li>Ferramenta utilizada (modelo, número de série, data da última calibração)</li>
+      <li>Bitola e tipo do condutor (AWG, material, encapamento)</li>
+      <li>Força de ruptura medida (N ou lb) e resultado (aprovado/rejeitado)</li>
+      <li>Tipo de falha: ruptura do fio, separação interface crimp ou falha visual</li>
+      <li>Referência à norma aplicada (UL 486 ou MIL-T-7928D) e tabela de valores mínimos</li>
+    </ul>
+  </section>
+
+  <!-- 8. DEFEITOS COMUNS -->
+  <section>
+    <h2><span class="sec-num">08</span> Defeitos Comuns e Causas</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Defeito</th>
+            <th>Possível Causa</th>
+            <th>Ação Corretiva</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Força abaixo do mínimo</td>
+            <td>Ferramenta descalibrada / barril subdimensionado para o AWG</td>
+            <td>Recalibrar/substituir ferramenta; verificar correspondência terminal-bitola</td>
+          </tr>
+          <tr>
+            <td>Separação imediata</td>
+            <td>Condutor não inserido até o fundo do barril</td>
+            <td>Revisar procedimento de inserção; usar localizador de terminal</td>
+          </tr>
+          <tr>
+            <td>Filamentos cortados</td>
+            <td>Decapagem excessiva / ferramenta de decapagem desregulada</td>
+            <td>Ajustar ferramenta de decapagem; retreinar operador</td>
+          </tr>
+          <tr>
+            <td>Fissura no barril</td>
+            <td>Overcrimp / material do terminal inadequado para a ferramenta</td>
+            <td>Reduzir força de crimp; verificar compatibilidade terminal-ferramenta</td>
+          </tr>
+          <tr>
+            <td>Resistência elétrica elevada</td>
+            <td>Undercrimp (óxidos não removidos) / contaminação no condutor</td>
+            <td>Aumentar força de crimp; limpar condutor antes da crimpagem</td>
+          </tr>
+          <tr>
+            <td>Isolamento no barril de condução</td>
+            <td>Decapagem insuficiente</td>
+            <td>Aumentar comprimento de decapagem conforme spec do terminal</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 9. RESUMO RÁPIDO -->
+  <section>
+    <h2><span class="sec-num">09</span> Checklist Rápido de Inspeção</h2>
+    <p>Use antes de liberar qualquer lote de crimpagens para uso final:</p>
+    <ul class="checks">
+      <li>Ferramenta aprovada e calibrada para o par terminal/bitola</li>
+      <li>Comprimento de decapagem correto, sem filamentos cortados</li>
+      <li>Condutor visível pelo inspection hole (se aplicável)</li>
+      <li>Todos os filamentos contidos no barril</li>
+      <li>Isolamento posicionado corretamente (não invade zona de condução)</li>
+      <li>Alinhamento reto, sem torção do terminal</li>
+      <li>Pull test realizado na amostra — força ≥ mínimo tabelado (MIL ou UL, conforme aplicável)</li>
+      <li>Resultado registrado com rastreabilidade completa</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  Manual consolidado com base em <strong>UL 486 A/B/C/F</strong> e <strong>MIL-T-7928D</strong> — para uso como orientação técnica. Consulte sempre o texto oficial das normas para aplicações críticas ou certificadas. Referências adicionais: SAE-AS7928, IPC/WHMA-A-620, ASTM B913, DIN EN 60352-2.
+</footer>
+
+</body>
+</html>
